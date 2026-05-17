@@ -30,7 +30,7 @@ function Post_cart({ post }) {
 
       {post.img && (
         <img
-          src={'https://romchik.pythonanywhere.com/' + post.img}
+          src={post.img}
           alt={post.name}
         />
       )}
@@ -70,7 +70,7 @@ function Post_cart({ post }) {
 
       <div className="post_user">
         <img
-          src={'https://romchik.pythonanywhere.com/' + post.user_avatar}
+          src={post.user_avatar}
           alt=""
         />
 

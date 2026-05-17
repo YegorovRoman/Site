@@ -143,7 +143,7 @@ function Post_detail() {
                 <h1>{post.data.name}</h1>
                 <p>{post.data.text}</p>
                 {post.data.img &&
-                    <img src={'https://romchik.pythonanywhere.com/' + post.data.img} alt={post.data.name} />
+                    <img src={post.data.img} alt={post.data.name} />
                 }
                 {post.data.video && (
                     <div className="video-container">

@@ -161,7 +161,7 @@ function Profile() {
     return (
         <div className="profile_page">
             <div className="profile">
-                <img src={'https://romchik.pythonanywhere.com/' + profile.avatar} alt={profile.first_name} />
+                <img src={profile.avatar} alt={profile.first_name} />
                 <h1>{profile.first_name} {profile.last_name}</h1>
                 <p>{profile.email}</p>
                 <button onClick={() => setForm((prev) => !prev)}>Редактировать</button>
@@ -195,7 +195,7 @@ function Profile() {
                         {
                             requests.map(item => (
                                 <div className="request_card" key={item.id}>
-                                    <img src={'https://romchik.pythonanywhere.com/' + item.face_photo} alt=""/>
+                                    <img src={item.face_photo} alt=""/>
                                     <div className="request_card_info">
                                         <h3>{item.first_name} {item.last_name}</h3>
                                         <p>{item.email}</p>
