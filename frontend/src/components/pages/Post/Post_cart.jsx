@@ -30,7 +30,7 @@ function Post_cart({ post }) {
 
       {post.img && (
         <img
-          src={'http://127.0.0.1:8000/' + post.img}
+          src={'https://romchik.pythonanywhere.com/' + post.img}
           alt={post.name}
         />
       )}
@@ -57,7 +57,7 @@ function Post_cart({ post }) {
               src={
                 post.video.startsWith('http')
                   ? post.video
-                  : 'http://127.0.0.1:8000/' + post.video
+                  : 'https://romchik.pythonanywhere.com/' + post.video
               }
             >
               Ваш браузер не поддерживает видео
@@ -70,7 +70,7 @@ function Post_cart({ post }) {
 
       <div className="post_user">
         <img
-          src={'http://127.0.0.1:8000/' + post.user_avatar}
+          src={'https://romchik.pythonanywhere.com/' + post.user_avatar}
           alt=""
         />
 

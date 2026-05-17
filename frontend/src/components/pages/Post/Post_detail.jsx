@@ -143,14 +143,14 @@ function Post_detail() {
                 <h1>{post.data.name}</h1>
                 <p>{post.data.text}</p>
                 {post.data.img &&
-                    <img src={'http://127.0.0.1:8000/' + post.data.img} alt={post.data.name} />
+                    <img src={'https://romchik.pythonanywhere.com/' + post.data.img} alt={post.data.name} />
                 }
                 {post.data.video && (
                     <div className="video-container">
                         {post.data.video.includes('youtube.com') || post.data.video.includes('youtu.be') ? (
                             <iframe src={`https://www.youtube.com/embed/${getYouTubeId(post.data.video)}`} title="YouTube video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                         ) : (
-                            <video controls src={post.data.video.startsWith('http') ? post.data.video : 'http://127.0.0.1:8000/' + post.data.video}> Ваш браузер не поддерживает видео</video>
+                            <video controls src={post.data.video.startsWith('http') ? post.data.video : 'https://romchik.pythonanywhere.com/' + post.data.video}> Ваш браузер не поддерживает видео</video>
                         )}
                     </div>
                 )}
