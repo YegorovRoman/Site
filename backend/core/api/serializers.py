@@ -3,6 +3,9 @@ from .models import User, Review, Recommendation, Post, RegistrationRequest
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 
+# Константа для продакшн-домена, чтобы не дублировать её в коде
+DOMAIN = "https://romchik.pythonanywhere.com"
+
 # <-----------------------------User--------------------------->
 
 
@@ -18,6 +21,9 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class RegistrationRequestSerializer(serializers.ModelSerializer):
+    # Принудительно форматируем ссылку на фото заявки
+    face_photo = serializers.SerializerMethodField()
+
     class Meta:
         model = RegistrationRequest
         fields = ['id', 'email', 'password', 'first_name', 'last_name', 'face_photo']
@@ -26,22 +32,42 @@ class RegistrationRequestSerializer(serializers.ModelSerializer):
         validated_data['password'] = make_password(validated_data['password'])
         return RegistrationRequest.objects.create(**validated_data)
 
+    def get_face_photo(self, obj):
+        if obj.face_photo:
+            return f"{DOMAIN}/media/{obj.face_photo.name}"
+        return None
+
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
     def validate(self, attrs):
-        user = authenticate(**attrs)
-        if user:
-            return user
-        return False
+        # DRF аутентифицирует по username, поэтому подменяем email на username для authenticate
+        username = attrs.get('email')
+        password = attrs.get('password')
+        
+        user = authenticate(username=username, password=password)
+        if not user:
+            raise serializers.ValidationError("Неверный email или пароль.")
+            
+        # Сериализатор ожидает, что метод validate вернет валидированные данные (словарь attrs)
+        attrs['user'] = user
+        return attrs
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    # Принудительно форматируем ссылку на аватар профиля
+    avatar = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = ('id', 'email', 'avatar', 'first_name', 'last_name')
+
+    def get_avatar(self, obj):
+        if obj.avatar:
+            return f"{DOMAIN}/media/{obj.avatar.name}"
+        return f"{DOMAIN}/media/files/User_default.png"
 
 # <-----------------------------------Review--------------------------------->
 
@@ -59,8 +85,8 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def get_user_avatar(self, obj):
         if obj.user.avatar:
-            return obj.user.avatar.url
-        return None
+            return f"{DOMAIN}/media/{obj.user.avatar.name}"
+        return f"{DOMAIN}/media/files/User_default.png"
 
     def create(self, validated_data):
         validated_data['post'] = self.context['post']
@@ -73,6 +99,8 @@ class ReviewSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()
     user_avatar = serializers.SerializerMethodField()
+    # Принудительно форматируем изображение самого поста
+    img = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -84,7 +112,12 @@ class PostSerializer(serializers.ModelSerializer):
     
     def get_user_avatar(self, obj):
         if obj.user.avatar:
-            return obj.user.avatar.url
+            return f"{DOMAIN}/media/{obj.user.avatar.name}"
+        return f"{DOMAIN}/media/files/User_default.png"
+        
+    def get_img(self, obj):
+        if obj.img:
+            return f"{DOMAIN}/media/{obj.img.name}"
         return None
     
 
@@ -96,4 +129,3 @@ class RecommendationSerializer(serializers.ModelSerializer):
         model = Recommendation
         fields = ['id', 'text', 'user', 'rating']
         read_only_fields = ['user']
-
