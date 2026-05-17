@@ -31,7 +31,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     text = models.TextField()
-    img = models.FileField(upload_to='files/%Y/%m/%d', blank=True, null=True)
+    img = models.FileField(upload_to='posts', blank=True, null=True)
     video = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -4,13 +4,14 @@ from .serializers import (LoginSerializer, RegisterSerializer, PostSerializer, R
                           ReviewSerializer, ProfileSerializer, RegistrationRequestSerializer)
 from .models import User, Review, Post, Recommendation, RegistrationRequest
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_422_UNPROCESSABLE_ENTITY
 from django.shortcuts import get_object_or_404, get_list_or_404
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # <----------------- Work with the model User ------------------->
-
+@parser_classes([MultiPartParser, FormParser])
 @api_view(['POST'])
 def register(request):
     serializer = RegistrationRequestSerializer(data=request.data)
@@ -92,15 +93,19 @@ def profile(request):
 # <----------------- Work with the model Post ----------------------->
 
 @api_view(['POST', 'GET'])
+@parser_classes([MultiPartParser, FormParser]) # <--- ОБЯЗАТЕЛЬНО ДЛЯ ЗАГРУЗКИ ФАЙЛОВ
 def post_list_create(request):
     if not request.user.is_authenticated:
         return Response({'detail': 'not authenticated'}, status=HTTP_403_FORBIDDEN)
+    
     if request.method == 'POST':
+        # Передаем и текстовые данные (request.data), и файлы (request.FILES)
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
             return Response({'data': serializer.data}, status=HTTP_201_CREATED)
         return Response({'detail': 'register failed', 'error': serializer.errors}, status=HTTP_422_UNPROCESSABLE_ENTITY)
+        
     elif request.method == 'GET':
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
