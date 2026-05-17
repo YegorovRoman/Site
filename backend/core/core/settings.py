@@ -142,3 +142,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR.parent.parent / 'frontend' / 'dist' / 'assets']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+import os
+
+print("--- ДИАГНОСТИКА ПУТЕЙ DJANGO ---")
+print(f"BASE_DIR (где лежит manage.py): {BASE_DIR}")
+print(f"Ищем фронтенд тут: {BASE_DIR.parent.parent / 'frontend' / 'dist'}")
+print(f"Существует ли папка dist?: {os.path.exists(BASE_DIR.parent.parent / 'frontend' / 'dist')}")
+print("--------------------------------")
