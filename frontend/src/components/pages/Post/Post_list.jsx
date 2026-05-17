@@ -49,7 +49,7 @@ function Post_list() {
     };
 
     const allData = async (e) => {
-        const response = await fetch('http://127.0.0.1:8000/api/posts', {
+        const response = await fetch('https://romchik.pythonanywhere.com/api/posts', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }

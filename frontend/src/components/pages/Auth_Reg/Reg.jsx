@@ -22,7 +22,7 @@ function Reg() {
         formData.append('first_name', first_name)
         formData.append('last_name', last_name)
         formData.append('face_photo', facePhoto)
-        const response = await fetch('/api/register', {
+        const response = await fetch("https://romchik.pythonanywhere.com/api/register", {
             method: 'POST',
             body: formData
         })

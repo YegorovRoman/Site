@@ -22,7 +22,7 @@ function Post_detail() {
 
 
     const dataParam = async (e) => {
-        const response = await fetch(`http://127.0.0.1:8000/api/posts/${id}`, {
+        const response = await fetch(`https://romchik.pythonanywhere.com/api/posts/${id}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
             }
@@ -39,7 +39,7 @@ function Post_detail() {
 
     const oneDelete = async (e) => {
         e.preventDefault()
-        const response = await fetch(`http://127.0.0.1:8000/api/posts/${id}`, {
+        const response = await fetch(`https://romchik.pythonanywhere.com/api/posts/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -68,7 +68,7 @@ function Post_detail() {
         if (video && video !== post.data.video) {
             formData.append('video', video)
         }
-        const response = await fetch(`http://127.0.0.1:8000/api/posts/${id}`, {
+        const response = await fetch(`https://romchik.pythonanywhere.com/api/posts/${id}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -95,7 +95,7 @@ function Post_detail() {
 
 
     const allDataReviews = async () => {
-        const response = await fetch(`http://127.0.0.1:8000/api/reviews/${id}`, {
+        const response = await fetch(`https://romchik.pythonanywhere.com/api/reviews/${id}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -110,7 +110,7 @@ function Post_detail() {
 
     const oneCreateReview = async (e) => {
         e.preventDefault()
-        const response = await fetch(`http://127.0.0.1:8000/api/reviews/${id}`, {
+        const response = await fetch(`https://romchik.pythonanywhere.com/api/reviews/${id}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,

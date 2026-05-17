@@ -11,7 +11,7 @@ function Auth() {
 
     const login = async (e) => {
         e.preventDefault()
-        const response = await fetch('/api/login', {
+        const response = await fetch("https://romchik.pythonanywhere.com/api/login", {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
