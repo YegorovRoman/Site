@@ -1,0 +1,223 @@
+/* =========================================
+   AUTH PAGE
+========================================= */
+
+.auth_page {
+    width: 100%;
+    min-height: calc(100vh - 90px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px 20px;
+}
+
+/* =========================================
+   AUTH CONTAINER
+========================================= */
+
+.auth_container {
+    width: 100%;
+    max-width: 520px;
+
+    background:
+        linear-gradient(180deg,
+            rgba(18, 18, 18, 0.96),
+            rgba(8, 8, 8, 0.96));
+
+    border: 1px solid #1d1d1d;
+    border-radius: 32px;
+
+    padding: 42px;
+
+    position: relative;
+    overflow: hidden;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.55);
+}
+
+/* glow */
+
+.auth_container::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(circle at top,
+            rgba(255, 255, 255, 0.05),
+            transparent 70%);
+
+    pointer-events: none;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.auth_header {
+    text-align: center;
+
+    margin-bottom: 34px;
+}
+
+.auth_header h1 {
+    margin: 0 0 12px;
+
+    font-size: 2.8rem;
+    font-weight: 900;
+
+    letter-spacing: -2px;
+
+    color: white;
+}
+
+.auth_header p {
+    margin: 0;
+
+    color: #8f8f8f;
+
+    font-size: 15px;
+}
+
+/* =========================================
+   FORM
+========================================= */
+
+.auth_form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.auth_form input {
+    width: 100%;
+
+    background: #070707;
+
+    border: 1px solid #1f1f1f;
+    border-radius: 18px;
+
+    padding: 18px;
+
+    color: white;
+
+    font-size: 15px;
+
+    transition: .3s ease;
+}
+
+.auth_form input::placeholder {
+    color: #666;
+}
+
+.auth_form input:focus {
+    border-color: #5c5c5c;
+
+    box-shadow:
+        0 0 0 4px rgba(255, 255, 255, 0.05);
+
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   FILE INPUT
+========================================= */
+
+.auth_form input[type="file"] {
+    padding: 14px;
+
+    background: #0a0a0a;
+
+    border: 1px dashed #2d2d2d;
+
+    color: #888;
+}
+
+.auth_form input[type="file"]::file-selector-button {
+    background: white;
+    color: black;
+
+    border: none;
+    border-radius: 12px;
+
+    padding: 10px 16px;
+
+    margin-right: 14px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.auth_form button {
+    width: 100%;
+
+    margin-top: 6px;
+
+    background: white;
+    color: black;
+
+    border: none;
+    border-radius: 18px;
+
+    padding: 18px;
+
+    font-size: 12px;
+    font-weight: 900;
+
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    transition: .35s ease;
+}
+
+.auth_form button:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 15px 35px rgba(255, 255, 255, 0.16);
+}
+
+/* =========================================
+   ERROR
+========================================= */
+
+.auth_error {
+    margin-top: 18px;
+
+    text-align: center;
+
+    color: #ff5d5d;
+
+    font-size: 14px;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .auth_container {
+        padding: 28px 20px;
+
+        border-radius: 24px;
+    }
+
+    .auth_header h1 {
+        font-size: 2rem;
+    }
+
+}

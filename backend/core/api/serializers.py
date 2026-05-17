@@ -1,0 +1,99 @@
+from rest_framework import serializers
+from .models import User, Review, Recommendation, Post, RegistrationRequest
+from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import make_password
+
+# <-----------------------------User--------------------------->
+
+
+class RegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'password', 'first_name', 'last_name']
+
+    def create(self, validated_data):
+        validated_data['username'] = validated_data['email']
+        user = User.objects.create_user(**validated_data)
+        return user
+
+
+class RegistrationRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RegistrationRequest
+        fields = ['id', 'email', 'password', 'first_name', 'last_name', 'face_photo']
+
+    def create(self, validated_data):
+        validated_data['password'] = make_password(validated_data['password'])
+        return RegistrationRequest.objects.create(**validated_data)
+
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        user = authenticate(**attrs)
+        if user:
+            return user
+        return False
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'avatar', 'first_name', 'last_name')
+
+# <-----------------------------------Review--------------------------------->
+
+class ReviewSerializer(serializers.ModelSerializer):
+    user_name = serializers.SerializerMethodField()
+    user_avatar = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Review
+        fields = ['id', 'text', 'rating', 'user', 'user_name', 'user_avatar']
+        read_only_fields = ['user']
+
+    def get_user_name(self, obj):
+        return f'{obj.user.first_name} {obj.user.last_name}'
+
+    def get_user_avatar(self, obj):
+        if obj.user.avatar:
+            return obj.user.avatar.url
+        return None
+
+    def create(self, validated_data):
+        validated_data['post'] = self.context['post']
+        validated_data['user'] = self.context['user']
+        return super().create(validated_data)
+
+
+# <---------------------------------------Post---------------------------------->
+
+class PostSerializer(serializers.ModelSerializer):
+    user_name = serializers.SerializerMethodField()
+    user_avatar = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Post
+        fields = ['id', 'text', 'user', 'img', 'video', 'created_at', 'name', 'user_name', 'user_avatar']
+        read_only_fields = ['user', 'created_at']
+
+    def get_user_name(self, obj):
+        return f"{obj.user.first_name} {obj.user.last_name}"
+    
+    def get_user_avatar(self, obj):
+        if obj.user.avatar:
+            return obj.user.avatar.url
+        return None
+    
+
+
+# <-----------------------------------------Recommendation-------------------->
+
+class RecommendationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recommendation
+        fields = ['id', 'text', 'user', 'rating']
+        read_only_fields = ['user']
+
