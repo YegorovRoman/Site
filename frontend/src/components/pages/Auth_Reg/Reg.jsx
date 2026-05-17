@@ -22,7 +22,7 @@ function Reg() {
         formData.append('first_name', first_name)
         formData.append('last_name', last_name)
         formData.append('face_photo', facePhoto)
-        const response = await fetch('http://127.0.0.1:8000/api/register', {
+        const response = await fetch('/api/register', {
             method: 'POST',
             body: formData
         })
