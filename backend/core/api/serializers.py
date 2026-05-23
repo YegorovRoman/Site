@@ -98,8 +98,8 @@ class PostSerializer(serializers.ModelSerializer):
     
     def get_user_avatar(self, obj):
         if obj.user.avatar:
-            return f"{DOMAIN}/media/{obj.user.avatar.name}"
-        return f"{DOMAIN}/media/files/User_default.png"
+            return obj.user.avatar.url
+        return None
         
     def get_img(self, obj):
         if obj.img:
