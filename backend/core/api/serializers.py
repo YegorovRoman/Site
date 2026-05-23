@@ -3,8 +3,6 @@ from .models import User, Review, Recommendation, Post, RegistrationRequest
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 
-# Константа для продакшн-домена, чтобы не дублировать её в коде
-DOMAIN = "https://romchik.pythonanywhere.com"
 
 # <-----------------------------User--------------------------->
 
@@ -34,7 +32,7 @@ class RegistrationRequestSerializer(serializers.ModelSerializer):
 
     def get_face_photo(self, obj):
         if obj.face_photo:
-            return f"{DOMAIN}/media/{obj.face_photo.name}"
+            return obj.face_photo.url
         return None
 
 
@@ -57,17 +55,10 @@ class LoginSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    # Принудительно форматируем ссылку на аватар профиля
-    avatar = serializers.SerializerMethodField()
-
     class Meta:
         model = User
         fields = ('id', 'email', 'avatar', 'first_name', 'last_name')
-
-    def get_avatar(self, obj):
-        if obj.avatar:
-            return f"{DOMAIN}/media/{obj.avatar.name}"
-        return f"{DOMAIN}/media/files/User_default.png"
+    # get_avatar больше не нужен — Cloudinary отдаёт URL автоматически
 
 # <-----------------------------------Review--------------------------------->
 
@@ -85,13 +76,8 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def get_user_avatar(self, obj):
         if obj.user.avatar:
-            return f"{DOMAIN}/media/{obj.user.avatar.name}"
-        return f"{DOMAIN}/media/files/User_default.png"
-
-    def create(self, validated_data):
-        validated_data['post'] = self.context['post']
-        validated_data['user'] = self.context['user']
-        return super().create(validated_data)
+            return obj.user.avatar.url  # Cloudinary URL
+        return None
 
 
 # <---------------------------------------Post---------------------------------->
@@ -117,7 +103,7 @@ class PostSerializer(serializers.ModelSerializer):
         
     def get_img(self, obj):
         if obj.img:
-            return f"{DOMAIN}/media/{obj.img.name}"
+            return obj.img.url
         return None
     
 
