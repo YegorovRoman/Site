@@ -11,8 +11,9 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
 
 # <----------------- Work with the model User ------------------->
-@parser_classes([MultiPartParser, FormParser])
+
 @api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
 def register(request):
     serializer = RegistrationRequestSerializer(data=request.data)
     if serializer.is_valid():
