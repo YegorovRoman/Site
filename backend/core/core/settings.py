@@ -42,6 +42,9 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+print(f"DEFAULT_FILE_STORAGE: {DEFAULT_FILE_STORAGE}")
+print(f"CLOUDINARY_CLOUD_NAME: {os.environ.get('CLOUDINARY_CLOUD_NAME')}")
+
 MEDIA_URL = '/media/'
 
 CORS_ALLOW_ALL_ORIGINS = True
