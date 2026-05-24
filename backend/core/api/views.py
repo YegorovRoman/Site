@@ -92,6 +92,10 @@ def profile(request):
             request.data._mutable = True
             request.data['avatar'] = result['secure_url']
         serializer = ProfileSerializer(instance=user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data': serializer.data}, status=HTTP_200_OK)
+        return Response({'detail': 'update failed', 'error': serializer.errors}, status=HTTP_422_UNPROCESSABLE_ENTITY)
         
 
 # <----------------- Work with the model Post ----------------------->
