@@ -1,5 +1,6 @@
 FROM python:3.11-slim
 
+# force rebuild 2026-05-23
 WORKDIR /app
 
 COPY requirements.txt .
