@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_422_UNPROCESSABLE_ENTITY
 from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
+import cloudinary.uploader
 
 # <----------------- Work with the model User ------------------->
 
@@ -85,11 +86,12 @@ def profile(request):
         serializer = ProfileSerializer(user)
         return Response({'data': serializer.data}, status=HTTP_200_OK)
     elif request.method == 'PATCH':
+        if 'avatar' in request.FILES:
+            file = request.FILES['avatar']
+            result = cloudinary.uploader.upload(file)
+            request.data._mutable = True
+            request.data['avatar'] = result['secure_url']
         serializer = ProfileSerializer(instance=user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'data': serializer.data}, status=HTTP_200_OK)
-        return Response({'detail': 'update failed', 'error': serializer.errors}, status=HTTP_422_UNPROCESSABLE_ENTITY)
         
 
 # <----------------- Work with the model Post ----------------------->
