@@ -6,7 +6,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    avatar = models.FileField(upload_to='files/%Y/%m/%d', default='files/User_default.png')
+    avatar = models.CharField(max_length=500, default='files/User_default.png')
     is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
@@ -19,7 +19,7 @@ class RegistrationRequest(models.Model):
     password = models.CharField(max_length=255)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    face_photo = models.ImageField(upload_to='face_photos/')
+    face_photo = models.CharField(max_length=500)
     is_approved = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -31,7 +31,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     text = models.TextField()
-    img = models.FileField(upload_to='posts', blank=True, null=True)
+    img = models.CharField(max_length=500, blank=True, null=True)
     video = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
