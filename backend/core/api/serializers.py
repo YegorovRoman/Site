@@ -55,10 +55,16 @@ class LoginSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = ('id', 'email', 'avatar', 'first_name', 'last_name')
-    # get_avatar больше не нужен — Cloudinary отдаёт URL автоматически
+
+    def get_avatar(self, obj):
+        if obj.avatar:
+            return obj.avatar.url
+        return None
 
 # <-----------------------------------Review--------------------------------->
 
