@@ -89,8 +89,10 @@ def profile(request):
         if 'avatar' in request.FILES:
             file = request.FILES['avatar']
             result = cloudinary.uploader.upload(file)
-            request.data._mutable = True
-            request.data['avatar'] = result['secure_url']
+            user.avatar = result['secure_url']
+            user.save()
+            serializer = ProfileSerializer(user)
+            return Response({'data': serializer.data}, status=HTTP_200_OK)
         serializer = ProfileSerializer(instance=user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
