@@ -16,7 +16,11 @@ import cloudinary.uploader
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 def register(request):
-    serializer = RegistrationRequestSerializer(data=request.data)
+    data = request.data.dict()
+    if 'face_photo' in request.FILES:
+        result = cloudinary.uploader.upload(request.FILES['face_photo'])
+        data['face_photo'] = result['secure_url']
+    serializer = RegistrationRequestSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
         return Response({'data': 'success'}, status=HTTP_201_CREATED)
@@ -103,14 +107,17 @@ def profile(request):
 # <----------------- Work with the model Post ----------------------->
 
 @api_view(['POST', 'GET'])
-@parser_classes([MultiPartParser, FormParser]) # <--- ОБЯЗАТЕЛЬНО ДЛЯ ЗАГРУЗКИ ФАЙЛОВ
+@parser_classes([MultiPartParser, FormParser])
 def post_list_create(request):
     if not request.user.is_authenticated:
         return Response({'detail': 'not authenticated'}, status=HTTP_403_FORBIDDEN)
     
     if request.method == 'POST':
-        # Передаем и текстовые данные (request.data), и файлы (request.FILES)
-        serializer = PostSerializer(data=request.data)
+        data = request.data.dict()
+        if 'img' in request.FILES:
+            result = cloudinary.uploader.upload(request.FILES['img'])
+            data['img'] = result['secure_url']
+        serializer = PostSerializer(data=data)
         if serializer.is_valid():
             serializer.save(user=request.user)
             return Response({'data': serializer.data}, status=HTTP_201_CREATED)
@@ -150,6 +157,10 @@ def post_get_delete_update(request, id_post):
         if post.user != request.user:
             if not request.user.is_staff:
                 return Response({'detail': 'not authenticated'}, status=HTTP_403_FORBIDDEN)
+        if 'img' in request.FILES:
+            result = cloudinary.uploader.upload(request.FILES['img'])
+            post.img = result['secure_url']
+            post.save()
         serializer = PostSerializer(post, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()

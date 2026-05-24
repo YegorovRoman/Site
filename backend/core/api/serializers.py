@@ -32,6 +32,9 @@ class RegistrationRequestSerializer(serializers.ModelSerializer):
 
     def get_face_photo(self, obj):
         if obj.face_photo:
+            url = str(obj.face_photo)
+            if url.startswith('http'):
+                return url
             return obj.face_photo.url
         return None
 
@@ -85,7 +88,10 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def get_user_avatar(self, obj):
         if obj.user.avatar:
-            return obj.user.avatar.url  # Cloudinary URL
+            url = str(obj.user.avatar)
+            if url.startswith('http'):
+                return url
+            return obj.user.avatar.url
         return None
 
 
@@ -107,13 +113,20 @@ class PostSerializer(serializers.ModelSerializer):
     
     def get_user_avatar(self, obj):
         if obj.user.avatar:
+            url = str(obj.user.avatar)
+            if url.startswith('http'):
+                return url
             return obj.user.avatar.url
         return None
         
     def get_img(self, obj):
         if obj.img:
+            url = str(obj.img)
+            if url.startswith('http'):
+                return url
             return obj.img.url
         return None
+
     
 
 
