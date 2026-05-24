@@ -63,6 +63,9 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_avatar(self, obj):
         if obj.avatar:
+            url = str(obj.avatar)
+            if url.startswith('http'):
+                return url
             return obj.avatar.url
         return None
 
