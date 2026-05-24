@@ -100,32 +100,29 @@ class ReviewSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()
     user_avatar = serializers.SerializerMethodField()
-    # Принудительно форматируем изображение самого поста
     img = serializers.SerializerMethodField()
+    img_url = serializers.CharField(write_only=True, required=False, allow_null=True)
 
     class Meta:
         model = Post
-        fields = ['id', 'text', 'user', 'img', 'video', 'created_at', 'name', 'user_name', 'user_avatar']
+        fields = ['id', 'text', 'user', 'img', 'img_url', 'video', 'created_at', 'name', 'user_name', 'user_avatar']
         read_only_fields = ['user', 'created_at']
 
-    def get_user_name(self, obj):
-        return f"{obj.user.first_name} {obj.user.last_name}"
-    
-    def get_user_avatar(self, obj):
-        if obj.user.avatar:
-            url = str(obj.user.avatar)
-            if url.startswith('http'):
-                return url
-            return obj.user.avatar.url
-        return None
-        
-    def get_img(self, obj):
-        if obj.img:
-            url = str(obj.img)
-            if url.startswith('http'):
-                return url
-            return obj.img.url
-        return None
+    def create(self, validated_data):
+        img_url = validated_data.pop('img_url', None)
+        post = super().create(validated_data)
+        if img_url:
+            post.img = img_url
+            post.save()
+        return post
+
+    def update(self, instance, validated_data):
+        img_url = validated_data.pop('img_url', None)
+        instance = super().update(instance, validated_data)
+        if img_url:
+            instance.img = img_url
+            instance.save()
+        return instance
 
     
 

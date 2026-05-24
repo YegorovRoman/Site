@@ -120,7 +120,7 @@ def post_list_create(request):
             print("IMG FOUND!")
             result = cloudinary.uploader.upload(request.FILES['img'])
             print(f"CLOUDINARY RESULT: {result}")
-            data['img'] = result['secure_url']
+            data['img_url'] = result['secure_url']
         serializer = PostSerializer(data=data)
         if serializer.is_valid():
             serializer.save(user=request.user)
