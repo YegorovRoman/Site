@@ -76,6 +76,7 @@ def logout(request):
 
 
 @api_view(['GET', 'PATCH'])
+@parser_classes([MultiPartParser, FormParser])
 def profile(request):
     if not request.user.is_authenticated:
         return Response({'detail': 'not authenticated'}, status=HTTP_403_FORBIDDEN)
