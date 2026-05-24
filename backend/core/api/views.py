@@ -61,7 +61,7 @@ def reject_registration(request, id):
 def login(request):
     serializer = LoginSerializer(data=request.data)
     if serializer.is_valid():
-        user = serializer.validated_data
+        user = serializer.validated_data['user']  # ← добавь ['user']
         token, _ = Token.objects.get_or_create(user=user)
         return Response({'data': {'token': token.key, 'is_staff': user.is_staff}}, status=HTTP_200_OK)
     return Response({'detail': 'register failed', 'error': serializer.errors}, status=HTTP_422_UNPROCESSABLE_ENTITY)
