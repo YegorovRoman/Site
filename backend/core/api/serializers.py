@@ -73,9 +73,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             url = str(obj.avatar)
             if url.startswith('http'):
                 return url
-            return obj.avatar.url
         return None
-
 # <-----------------------------------Review--------------------------------->
 
 class ReviewSerializer(serializers.ModelSerializer):
