@@ -94,6 +94,11 @@ class ReviewSerializer(serializers.ModelSerializer):
             return obj.user.avatar.url
         return None
 
+    def create(self, validated_data):
+        validated_data['post'] = self.context['post']
+        validated_data['user'] = self.context['user']
+        return super().create(validated_data)
+
 
 # <---------------------------------------Post---------------------------------->
 
