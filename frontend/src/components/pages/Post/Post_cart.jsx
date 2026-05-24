@@ -57,7 +57,7 @@ function Post_cart({ post }) {
               src={
                 post.video.startsWith('http')
                   ? post.video
-                  : 'https://romchik.pythonanywhere.com/' + post.video
+                  : `${import.meta.env.VITE_API_URL}` + post.video
               }
             >
               Ваш браузер не поддерживает видео

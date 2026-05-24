@@ -18,7 +18,7 @@ function Profile() {
     const [requests, setRequests] = useState([])
 
     const dataProfile = async () => {
-        const response = await fetch('https://romchik.pythonanywhere.com/api/profile', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -43,7 +43,7 @@ function Profile() {
         if (last_name) {
             formData.append('last_name', last_name)
         }
-        const response = await fetch(`https://romchik.pythonanywhere.com/api/profile`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -73,7 +73,7 @@ function Profile() {
         if (video) {
             formData.append('video', video)
         }
-        const response = await fetch('https://romchik.pythonanywhere.com/api/posts', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/posts`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -93,7 +93,7 @@ function Profile() {
     }
 
     const deleteProfile = async () => {
-        const response = await fetch(`https://romchik.pythonanywhere.com/api/logout`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/logout`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -111,7 +111,7 @@ function Profile() {
 
     const getRequests = async () => {
 
-        const response = await fetch('https://romchik.pythonanywhere.com/api/registration-request', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/registration-request`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -125,7 +125,7 @@ function Profile() {
     }
 
     const approveRequest = async (id) => {
-        const response = await fetch(`https://romchik.pythonanywhere.com/api/approve-registration/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/approve-registration/${id}`, {
             method: 'POST',
             headers: {
                 'Authorization':
@@ -138,7 +138,7 @@ function Profile() {
     }
 
     const rejectRequest = async (id) => {
-        const response = await fetch(`https://romchik.pythonanywhere.com/api/reject-registration/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reject-registration/${id}`, {
             method: 'POST',
             headers: {
                 'Authorization':

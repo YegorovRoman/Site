@@ -22,7 +22,7 @@ function Post_detail() {
 
 
     const dataParam = async (e) => {
-        const response = await fetch(`https://romchik.pythonanywhere.com/api/posts/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/posts/${id}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
             }
@@ -39,7 +39,7 @@ function Post_detail() {
 
     const oneDelete = async (e) => {
         e.preventDefault()
-        const response = await fetch(`https://romchik.pythonanywhere.com/api/posts/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/posts/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -68,7 +68,7 @@ function Post_detail() {
         if (video && video !== post.data.video) {
             formData.append('video', video)
         }
-        const response = await fetch(`https://romchik.pythonanywhere.com/api/posts/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/posts/${id}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -95,7 +95,7 @@ function Post_detail() {
 
 
     const allDataReviews = async () => {
-        const response = await fetch(`https://romchik.pythonanywhere.com/api/reviews/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/${id}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -110,7 +110,7 @@ function Post_detail() {
 
     const oneCreateReview = async (e) => {
         e.preventDefault()
-        const response = await fetch(`https://romchik.pythonanywhere.com/api/reviews/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/${id}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -150,7 +150,7 @@ function Post_detail() {
                         {post.data.video.includes('youtube.com') || post.data.video.includes('youtu.be') ? (
                             <iframe src={`https://www.youtube.com/embed/${getYouTubeId(post.data.video)}`} title="YouTube video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                         ) : (
-                            <video controls src={post.data.video.startsWith('http') ? post.data.video : 'https://romchik.pythonanywhere.com/' + post.data.video}> Ваш браузер не поддерживает видео</video>
+                            <video controls src={post.data.video.startsWith('http') ? post.data.video : `${import.meta.env.VITE_API_URL}` + post.data.video}> Ваш браузер не поддерживает видео</video>
                         )}
                     </div>
                 )}
