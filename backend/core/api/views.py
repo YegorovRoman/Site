@@ -114,8 +114,12 @@ def post_list_create(request):
     
     if request.method == 'POST':
         data = request.data.dict()
+        print(f"FILES: {request.FILES}")
+        print(f"DATA: {request.data}")
         if 'img' in request.FILES:
+            print("IMG FOUND!")
             result = cloudinary.uploader.upload(request.FILES['img'])
+            print(f"CLOUDINARY RESULT: {result}")
             data['img'] = result['secure_url']
         serializer = PostSerializer(data=data)
         if serializer.is_valid():
