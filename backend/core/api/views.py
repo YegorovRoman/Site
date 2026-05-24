@@ -19,7 +19,7 @@ def register(request):
     data = request.data.dict()
     if 'face_photo' in request.FILES:
         result = cloudinary.uploader.upload(request.FILES['face_photo'])
-        data['face_photo'] = result['secure_url']
+        data['face_photo_url'] = result['secure_url']
     serializer = RegistrationRequestSerializer(data=data)
     if serializer.is_valid():
         serializer.save()

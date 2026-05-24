@@ -19,23 +19,27 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class RegistrationRequestSerializer(serializers.ModelSerializer):
-    # Принудительно форматируем ссылку на фото заявки
     face_photo = serializers.SerializerMethodField()
+    face_photo_url = serializers.CharField(write_only=True, required=False, allow_null=True)
 
     class Meta:
         model = RegistrationRequest
-        fields = ['id', 'email', 'password', 'first_name', 'last_name', 'face_photo']
+        fields = ['id', 'email', 'password', 'first_name', 'last_name', 'face_photo', 'face_photo_url']
 
     def create(self, validated_data):
+        face_photo_url = validated_data.pop('face_photo_url', None)
         validated_data['password'] = make_password(validated_data['password'])
-        return RegistrationRequest.objects.create(**validated_data)
+        registration = RegistrationRequest.objects.create(**validated_data)
+        if face_photo_url:
+            registration.face_photo = face_photo_url
+            registration.save()
+        return registration
 
     def get_face_photo(self, obj):
         if obj.face_photo:
             url = str(obj.face_photo)
             if url.startswith('http'):
                 return url
-            return obj.face_photo.url
         return None
 
 
